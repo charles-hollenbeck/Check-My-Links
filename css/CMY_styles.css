@@ -123,12 +123,22 @@
     cursor: pointer;
     padding: 2px 3px 4px;
 }
-#CMY_ReportBox #CMY_RB_Export {
+#CMY_ReportBox #CMY_RB_Export_Invalid {
     float: right;
     margin-right: 13px;
     cursor: pointer;
     height: 13px;
     width: 13px;
+    background-color: #a9060a;
+    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA0AAAANCAYAAABy6+R8AAAAB3RJTUUH2AwSDAEgJjauGgAAAAlwSFlzAAALEgAACxIB0t1+/AAAAARnQU1BAACxjwv8YQUAAAFcSURBVHjabVA7qsJQFJwkVyWFYikKdpa6HbGyMoVkL2lsFAMiWYSVhZgVCPZaCCLGRjHxd59zII9H8qa53/mcMZDBYrHQ+/0ej8cDpVIJWuvfN57r9TpUlnQ4HNDtdlGpVPD5fGCaptxzv9vtsFqt8iQ62LaN9/sNx3Hkc7VaxeVywWw2w3K5zJNerxcKhYLsJ5MJLMtCv98XIpEkCVQYhnq73cIwDCil5JLgLCS4rovpdIrhcCiuFFSbzQa9Xk+yF4tFzOdz3O93ich4o9FIyBTkH8ZXVObQf+ORMBgMJB4TEJ7nyUons1wuy4HqBAu43W4Yj8dCoAjBFFEUiZvKNtbpdCQiFTkXBWq1Gs7ns0Rst9uA7/v6+XzqFF+i/orInmsQBDrbsMlG0tx0pH1aOZWPxyP+JaUPzJ2CM55OJzQajRxJNZtNrNdrXK9XxHEsg7NizshmW61WjvQDnNjJUsseLXoAAAAASUVORK5CYII=)
+}
+#CMY_ReportBox #CMY_RB_Export_Redirects {
+    float: right;
+    margin-right: 13px;
+    cursor: pointer;
+    height: 13px;
+    width: 13px;
+    background-color: #ff9900;
     background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA0AAAANCAYAAABy6+R8AAAAB3RJTUUH2AwSDAEgJjauGgAAAAlwSFlzAAALEgAACxIB0t1+/AAAAARnQU1BAACxjwv8YQUAAAFcSURBVHjabVA7qsJQFJwkVyWFYikKdpa6HbGyMoVkL2lsFAMiWYSVhZgVCPZaCCLGRjHxd59zII9H8qa53/mcMZDBYrHQ+/0ej8cDpVIJWuvfN57r9TpUlnQ4HNDtdlGpVPD5fGCaptxzv9vtsFqt8iQ62LaN9/sNx3Hkc7VaxeVywWw2w3K5zJNerxcKhYLsJ5MJLMtCv98XIpEkCVQYhnq73cIwDCil5JLgLCS4rovpdIrhcCiuFFSbzQa9Xk+yF4tFzOdz3O93ich4o9FIyBTkH8ZXVObQf+ORMBgMJB4TEJ7nyUons1wuy4HqBAu43W4Yj8dCoAjBFFEUiZvKNtbpdCQiFTkXBWq1Gs7ns0Rst9uA7/v6+XzqFF+i/orInmsQBDrbsMlG0tx0pH1aOZWPxyP+JaUPzJ2CM55OJzQajRxJNZtNrNdrXK9XxHEsg7NizshmW61WjvQDnNjJUsseLXoAAAAASUVORK5CYII=)
 }
 #CMY_ReportBox #CMY_RB_Options {

@@ -41,7 +41,7 @@ chrome.extension.onMessage.addListener(
             document.getElementById("CMY_RB_Close").onclick = function() {
                 removeDOMElement("CMY_ReportBox");
             };
-            document.getElementById("CMY_RB_Export").onclick = function() {
+            document.getElementById("CMY_RB_Export_Invalid").onclick = function() {
                 var output = "";
                 var badLinks = document.getElementsByClassName("CMY_Invalid");
                 // Export csv string so it is accessible via excel
@@ -51,12 +51,32 @@ chrome.extension.onMessage.addListener(
                         var outerHTML;
                         output += "\"";
                         output += badLinks[i].href;
-                        output += "\",";
-                        output += "\"";
+                        output += "\",\"";
                         outerHTML = badLinks[i].outerHTML.replace(/"/g, '""');
                         output += outerHTML;
+                        output += "\"\n";
+                    }
+                    output = output.rtrim(',');
+                } else {
+                    output = "No links to export";
+                }
+                console.log(output);
+            };
+            document.getElementById("CMY_RB_Export_Redirects").onclick = function() {
+                var output = "";
+                var redirectingLinks = document.getElementsByClassName("CMY_Redirect");
+                // Export csv string so it is accessible via excel
+                if (redirectingLinks.length > 0) {
+                    output += "URL,Final URL,Status Code\n";
+                    for (i = 0; i < redirectingLinks.length; i++) {
+                        var outerHTML;
                         output += "\"";
-                        output += "\n";
+                        output += redirectingLinks[i].href;
+                        output += "\",\"";
+                        output += redirectingLinks[i].getAttribute('cmy-final-url');
+                        output += "\",\"";
+                        output += redirectingLinks[i].getAttribute('cmy-final-url-status');
+                        output += "\"\n";
                     }
                     output = output.rtrim(',');
                 } else {
@@ -88,6 +108,6 @@ function checkURL(link, options) {
             // Pass in the outerHTML, the href attributes defaults to the current page if left empty
             warnings = getEmptyLinkWarning(options, link.outerHTML, warnings);
             warnings = getNoHrefLinkWarning(options, link, warnings);
-            updateDisplay(link, warnings, response.status);
+            updateDisplay(link, warnings, response.status, response.lastStatus, response.lastUrl);
         });
 }

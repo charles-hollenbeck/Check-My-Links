@@ -116,10 +116,15 @@ function createDisplay(optURL, cacheType, checkType) {
         id: "CMY_RB_Close",
         innerHTML: "&times;"
     });
-    rbExportDiv = create("div", {
-        id: "CMY_RB_Export",
-        alt: "Export to console in CSV format",
-        title: "Export to console in CSV format"
+    rbExportRedirectDiv = create("div", {
+        id: "CMY_RB_Export_Redirects",
+        alt: "Export Redirecting Links to console in CSV format",
+        title: "Export Redirecting Links to console in CSV format"
+    });
+    rbExportInvalidDiv = create("div", {
+        id: "CMY_RB_Export_Invalid",
+        alt: "Export Invalid Links to console in CSV format",
+        title: "Export Invalid Links to console in CSV format"
     });
     rbSettings = create("div", {
         id: "CMY_RB_Settings",
@@ -142,7 +147,8 @@ function createDisplay(optURL, cacheType, checkType) {
     rbOptions.appendChild(rbOption2);
     rbHeader.appendChild(rbSettings);
     rbHeader.appendChild(rbClose);
-    rbHeader.appendChild(rbExportDiv);
+    rbHeader.appendChild(rbExportInvalidDiv);
+    rbHeader.appendChild(rbExportRedirectDiv);
     reportBox.appendChild(rbHeader);
     reportBox.appendChild(rbAmt);
     reportBox.appendChild(rbQueue);
@@ -153,7 +159,17 @@ function createDisplay(optURL, cacheType, checkType) {
     reportBox.appendChild(rbFail);
 }
 
-function updateDisplay(link, warnings, linkStatus) {
+function updateDisplay(link, warnings, linkStatus, finalURL, finalStatus) {
+    finalURL = finalURL || null;
+    finalStatus = finalStatus || null;
+
+    link.setAttribute('cmy-status-code', linkStatus);
+
+    if(finalURL !== null){
+        link.setAttribute('cmy-final-url', finalURL);
+        link.setAttribute('cmy-final-url-status', finalStatus);
+    }
+
     if (!isNaN(linkStatus) && 200 <= linkStatus && linkStatus < 300 && warnings.length === 0) {
         link.classList.add("CMY_Valid");
         passed += 1;
@@ -218,7 +234,9 @@ var timeout = 30000;
 function check(url) {
     var response = {
         status: null,
-        document: null
+        document: null,
+        lastStatus: null,
+        lastUrl: null
     };
     return new Promise(function(resolve, reject) {
         var XMLHttpTimeout = null;
@@ -236,6 +254,8 @@ function check(url) {
                 if (xhr.responseURL == url.split('#')[0]) {
                     response.status = xhr.status;
                 } else {
+                    response.lastStatus = xhr.status
+                    response.lastUrl = xhr.responseURL;
                     response.status = 300;
                 }
                 resolve(response);
@@ -257,6 +277,42 @@ function check(url) {
         }, timeout += 1000);
     });
 }
+
+// CRH May be able to just remove
+// function checkRedirectFinalStatus(url) {
+//     var response = {
+//         status: null
+//     };
+//     return new Promise(function(resolve, reject) {
+//         var XMLHttpTimeout = null;
+//         var xhr = new XMLHttpRequest();
+//         xhr.onreadystatechange = function(data) {
+//           if (xhr.readyState == 4) {
+//               log(xhr);
+//               clearTimeout(XMLHttpTimeout);
+//               response.source = "xhr";
+//               // Redirects eventually 200, comparing response URL with requested to detect redirects
+//               console.log(xhr.responseURL);
+//               response.status = xhr.status;
+//           }
+//           resolve(response);
+//         };
+
+//         try {
+//             xhr.open(getOption("checkType"), url, true);
+//             xhr.send();
+//         } catch (e) {
+//             console.log(e);
+//             response.status = 0;
+//             resolve(response);
+//         }
+//         XMLHttpTimeout = setTimeout(function() {
+//             response.status = 408;
+//             resolve(response);
+//             xhr.abort();
+//         }, timeout += 1000);
+//     });
+// }
 
 function XHRisNecessary(options, url) {
     if (shouldDOMbeParsed(url, options.parseDOM, options.checkType) === true || options.cache == 'false') {
