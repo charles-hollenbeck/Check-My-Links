@@ -127,20 +127,24 @@ function getSelectorForSelection() {
 
     if(selection.rangeCount > 0) {
         var domNode = selection.getRangeAt(0).commonAncestorContainer;
-        var selectorForNode = domNode.tagName;
-        var idList = '';
-        var classList = ''
-
-        if(domNode.id != ''){
-            idList = '#' + domNode.id;
-        }
-
-        if(domNode.classList.length > 0){
-            classList = '.' + Array.from(domNode.classList).join('.');
-        }
-
-        return selectorForNode + idList + classList;
+        return domNodeToSelector(domNode);
     }
 
     return '';
+}
+
+function domNodeToSelector(domNode){
+    var selectorForNode = domNode.tagName;
+    var idList = '';
+    var classList = ''
+
+    if(domNode.id != ''){
+        idList = '#' + domNode.id;
+    }
+
+    if(domNode.classList.length > 0){
+        classList = '.' + Array.from(domNode.classList).join('.');
+    }
+
+    return selectorForNode + idList + classList;
 }
