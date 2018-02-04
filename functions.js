@@ -254,7 +254,7 @@ function check(url) {
                 if (xhr.responseURL == url.split('#')[0]) {
                     response.status = xhr.status;
                 } else {
-                    response.lastStatus = xhr.status
+                    response.lastStatus = xhr.status;
                     response.lastUrl = xhr.responseURL;
                     response.status = 300;
                 }

@@ -138,7 +138,7 @@ function getSelectorForSelection() {
 function domNodeToSelector(domNode){
     var selectorForNode = domNode.tagName;
     var idList = '';
-    var classList = ''
+    var classList = '';
 
     if(domNode.id != ''){
         idList = '#' + domNode.id;
