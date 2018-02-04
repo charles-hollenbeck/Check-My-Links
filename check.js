@@ -18,10 +18,21 @@ chrome.extension.onMessage.addListener(
 
             // Inject Styles and Elements for feedback report
             createDisplay(optURL, cacheType, checkType);
+
             // Gather links
-            var pageLinks = document.getElementsByTagName('a');
+            var selectionSelector = getSelectorForSelection();
+
+            if(selectionSelector){
+                selectionSelector += ' a';
+            }else{
+                selectionSelector = 'a';
+            }
+
+            log('Using Selector: ' + selectionSelector);
+            var pageLinks = document.querySelectorAll(selectionSelector);
 
             log(pageLinks);
+
             var totalvalid = pageLinks.length;
 
             for (var i = 0; i < pageLinks.length; i++) {
@@ -110,4 +121,26 @@ function checkURL(link, options) {
             warnings = getNoHrefLinkWarning(options, link, warnings);
             updateDisplay(link, warnings, response.status, response.lastStatus, response.lastUrl);
         });
+}
+function getSelectorForSelection() {
+    var selection = window.getSelection();
+
+    if(selection.rangeCount > 0) {
+        var domNode = selection.getRangeAt(0).commonAncestorContainer;
+        var selectorForNode = domNode.tagName;
+        var idList = '';
+        var classList = ''
+
+        if(domNode.id != ''){
+            idList = '#' + domNode.id;
+        }
+
+        if(domNode.classList.length > 0){
+            classList = '.' + Array.from(domNode.classList).join('.');
+        }
+
+        return selectorForNode + idList + classList;
+    }
+
+    return '';
 }

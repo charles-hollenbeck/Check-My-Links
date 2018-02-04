@@ -278,42 +278,6 @@ function check(url) {
     });
 }
 
-// CRH May be able to just remove
-// function checkRedirectFinalStatus(url) {
-//     var response = {
-//         status: null
-//     };
-//     return new Promise(function(resolve, reject) {
-//         var XMLHttpTimeout = null;
-//         var xhr = new XMLHttpRequest();
-//         xhr.onreadystatechange = function(data) {
-//           if (xhr.readyState == 4) {
-//               log(xhr);
-//               clearTimeout(XMLHttpTimeout);
-//               response.source = "xhr";
-//               // Redirects eventually 200, comparing response URL with requested to detect redirects
-//               console.log(xhr.responseURL);
-//               response.status = xhr.status;
-//           }
-//           resolve(response);
-//         };
-
-//         try {
-//             xhr.open(getOption("checkType"), url, true);
-//             xhr.send();
-//         } catch (e) {
-//             console.log(e);
-//             response.status = 0;
-//             resolve(response);
-//         }
-//         XMLHttpTimeout = setTimeout(function() {
-//             response.status = 408;
-//             resolve(response);
-//             xhr.abort();
-//         }, timeout += 1000);
-//     });
-// }
-
 function XHRisNecessary(options, url) {
     if (shouldDOMbeParsed(url, options.parseDOM, options.checkType) === true || options.cache == 'false') {
         return true;
