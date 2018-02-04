@@ -57,11 +57,13 @@ chrome.extension.onMessage.addListener(
                 var badLinks = document.getElementsByClassName("CMY_Invalid");
                 // Export csv string so it is accessible via excel
                 if (badLinks.length > 0) {
-                    output += "URL,OuterHTML\n";
+                    output += "URL,Status,OuterHTML\n";
                     for (i = 0; i < badLinks.length; i++) {
                         var outerHTML;
                         output += "\"";
                         output += badLinks[i].href;
+                        output += "\",\"";
+                        output += badLinks[i].getAttribute('cmy-status-code');
                         output += "\",\"";
                         outerHTML = badLinks[i].outerHTML.replace(/"/g, '""');
                         output += outerHTML;
