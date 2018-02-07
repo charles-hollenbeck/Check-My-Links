@@ -57,16 +57,29 @@ chrome.extension.onMessage.addListener(
                 var badLinks = document.getElementsByClassName("CMY_Invalid");
                 // Export csv string so it is accessible via excel
                 if (badLinks.length > 0) {
-                    output += "URL,Status,OuterHTML\n";
+                    output += "URL,Anchor Text,Status,OuterHTML\n";
                     for (i = 0; i < badLinks.length; i++) {
-                        var outerHTML;
                         output += "\"";
                         output += badLinks[i].href;
                         output += "\",\"";
+
+                        // Remove the extra CMY_RESPONSE span from the anchor text
+                        var dupeBadLink = badLinks[i].cloneNode(true);
+                        for(j = 0; j < dupeBadLink.childNodes.length; j++){
+                            if(dupeBadLink.childNodes[j].classList){
+                                if(dupeBadLink.childNodes[j].tagName.toLowerCase() == 'span' && dupeBadLink.childNodes[j].classList.contains('CMY_Response')){
+                                    dupeBadLink.removeChild(dupeBadLink.childNodes[j]);
+                                    dupeBadLink.textContent = dupeBadLink.textContent.replace(/\s$/,''); // Strip extra space from right side of the string
+                                    break;
+                                }
+                            }
+                        }
+                        output += dupeBadLink.textContent;
+                        output += "\",\"";
+
                         output += badLinks[i].getAttribute('cmy-status-code');
                         output += "\",\"";
-                        outerHTML = badLinks[i].outerHTML.replace(/"/g, '""');
-                        output += outerHTML;
+                        output += badLinks[i].outerHTML.replace(/"/g, '""');
                         output += "\"\n";
                     }
                     output = output.rtrim(',');
@@ -80,11 +93,12 @@ chrome.extension.onMessage.addListener(
                 var redirectingLinks = document.getElementsByClassName("CMY_Redirect");
                 // Export csv string so it is accessible via excel
                 if (redirectingLinks.length > 0) {
-                    output += "URL,Final URL,Status Code\n";
+                    output += "URL,Anchor Text,Final URL,Status Code\n";
                     for (i = 0; i < redirectingLinks.length; i++) {
-                        var outerHTML;
                         output += "\"";
                         output += redirectingLinks[i].href;
+                        output += "\",\"";
+                        output += redirectingLinks[i].textContent;
                         output += "\",\"";
                         output += redirectingLinks[i].getAttribute('cmy-final-url');
                         output += "\",\"";
